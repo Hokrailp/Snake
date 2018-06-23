@@ -1,7 +1,9 @@
+
 import javax.swing.*;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
 
 import static java.lang.Thread.sleep;
 
@@ -10,8 +12,11 @@ import static java.lang.Thread.sleep;
  */
 public class Game {
 
-    public static int speed = 100;
-    public static int size = 25;
+    public static HashMap<Character, Snake.Direction> Key_Dir = new HashMap<>();
+
+    public static int speed = 200;
+    public static int size = 800;
+    public static int scale = 25;
     private int score = 0;
     public static Painter window;
     public static JLayeredPane screen;
@@ -20,13 +25,10 @@ public class Game {
     private World world;
     private char lastKeyPressed;
 
-    public void lose() {
-
-    }
-
     public void update() throws InterruptedException {
         while (true) {
             world.move(lastKeyPressed);
+            lastKeyPressed = 0;
             window.paint(world);
             sleep(Game.speed);
         }
@@ -34,13 +36,14 @@ public class Game {
 
     private void run () throws InterruptedException {
         window = new Painter("Snake");
-        startX = window.getWidth() / 2;
-        startY = window.getHeight() / 2;
+        //World.HEIGHT = 800/25;
+        //World.WIDTH = 800/25;
+        startX = World.WIDTH/2;
+        startY = World.HEIGHT/2;
         screen = window.getLayeredPane();
         world = new World(startX, startY);
         window.paint(world);
         window.addKeyListener(new KeyAdapter() {
-            @Override
             public void keyPressed(KeyEvent e) {
                 lastKeyPressed = e.getKeyChar();
             }

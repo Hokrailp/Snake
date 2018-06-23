@@ -1,6 +1,13 @@
 import javax.swing.*;
 
 public class Painter extends JFrame {
+    @SuppressWarnings("All")
+    public Painter (String title) {
+        super(title);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setSize(Game.size, Game.size);
+        setVisible(true);
+    }
 
     public void paint (World world) {
         paintFood(world.getFood());
@@ -12,18 +19,10 @@ public class Painter extends JFrame {
     }
 
     private void paintSnake(Snake snake) {
-        snake.square.setBounds(Game.startX + (snake.getX() - Game.startX) * Game.size, Game.startY + (snake.getY() - Game.startY) * Game.size, Game.size, Game.size);
+        snake.square.setBounds(snake.getX() * Game.scale, snake.getY() * Game.scale, Game.scale, Game.scale);
         Snake next = snake.getNext();
         if (next != null) {
-            paintSnake(snake.getNext());
+            paintSnake(next);
         }
     }
-
-    public Painter (String title) {
-        super(title);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setSize(800, 800);
-        setVisible(true);
-    }
-
 }
