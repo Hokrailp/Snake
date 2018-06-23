@@ -3,11 +3,11 @@
  */
 public class Food {
 
-    int x,y;
+    int x, y;
     int score;
-    public enum TYPE{
+
+    public enum TYPE {
         FOOD, SPEEDUP, SLOWDOWN, RESET
     }
-
 
 }
