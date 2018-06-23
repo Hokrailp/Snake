@@ -1,3 +1,7 @@
+import java.awt.*;
+
+import static java.lang.Thread.sleep;
+
 /**
  * Gоловa и "подзмейкa"
  * пока что сделана
@@ -12,20 +16,42 @@ public class Snake {
     private int yVelocity = 0;
     private int x, y;
 
-    private Direction direction = Direction.IDLE;
+    private Direction direction;
     private Snake next = null;
 
+    public Figure square = new Figure(Color.red);
+
     public Snake() {
-        x=0;
-        y=0;
-    }
-    public Snake(int x, int y) {
-        this.x = x;
-        this.y = y;
+        this(0, 0);
     }
 
-    private void move(Direction direction) {
-        if (next==null) return;
+    public Snake(int x, int y, Direction direction) {
+        this.x = x;
+        this.y = y;
+        Game.screen.add(square);
+        this.direction = direction;
+    }
+
+    public Snake(int x, int y) {
+        this(x, y, Direction.IDLE);
+    }
+
+    private void makeMove() {
+        x += xVelocity;
+        y += yVelocity;
+    }
+
+    public void move(){
+        boolean changedDirection = false;
+        makeMove();
+        moveNext(direction);
+        if (next != null)
+            next.move();
+    }
+
+    public void moveNext(Direction direction) {
+        this.direction = direction;
+        if (next == null) return;
         switch (direction) {
             case UP:
                 next.moveUp();
@@ -43,62 +69,60 @@ public class Snake {
                 break;
         }
     }
-    public void moveLeft () {
+
+    public void moveLeft() {
         xVelocity = -1;
         yVelocity = 0;
-        direction = Direction.LEFT;
-        x+=xVelocity;
-        y+=yVelocity;
-        move(direction);
-    }
-    public void moveRight () {
-        xVelocity = 1;
-        yVelocity = 0;
-        direction = Direction.RIGHT;
-        x+=xVelocity;
-        y+=yVelocity;
-        move(direction);
-    }
-    public void moveUp () {
-        xVelocity = 0;
-        yVelocity = -1;
-        direction = Direction.UP;
-        x+=xVelocity;
-        y+=yVelocity;
-        move(direction);
-    }
-    public void moveDown () {
-        xVelocity = 0;
-        yVelocity = 1;
-        direction = Direction.DOWN;
-        x+=xVelocity;
-        y+=yVelocity;
-        move(direction);
+        moveNext(Direction.LEFT);
     }
 
-    public Snake grow() {
-        int nX,nY;
-        nX = x-xVelocity;
-        nY = y-yVelocity;
-        next = new Snake(nX,nY);
-        return next;
+    public void moveRight() {
+        xVelocity = 1;
+        yVelocity = 0;
+        moveNext(Direction.RIGHT);
+    }
+
+    public void moveUp() {
+        xVelocity = 0;
+        yVelocity = -1;
+        moveNext(Direction.UP);
+    }
+
+    public void moveDown() {
+        xVelocity = 0;
+        yVelocity = 1;
+        moveNext(Direction.DOWN);
+    }
+
+    public void grow() {
+        int nX, nY;
+        nX = x - xVelocity;
+        nY = y - yVelocity;
+        next = new Snake(nX, nY, direction);
+        moveNext(direction);
     }
 
     public int getX() {
         return x;
     }
+
     public int getY() {
         return y;
     }
 
-    public int getxVelocity () {
+    public int getxVelocity() {
         return xVelocity;
     }
+
     public int getyVelocity() {
         return yVelocity;
     }
 
-    public Direction getDirection () {
+    public Snake getNext() {
+        return next;
+    }
+
+    public Direction getDirection() {
         return direction;
     }
 }
