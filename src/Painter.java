@@ -1,21 +1,20 @@
 import javax.swing.*;
+import java.util.List;
 
 public class Painter extends JFrame {
 
     public void paint (World world) {
         paintFood(world.getFood());
-        paintSnake(world.getHead());
+        paintSnake(world.getSnake());
     }
 
     private void paintFood (Food food) {
 
     }
 
-    private void paintSnake(Snake snake) {
-        snake.square.setBounds(Game.startX + (snake.getX() - Game.startX) * Game.size, Game.startY + (snake.getY() - Game.startY) * Game.size, Game.size, Game.size);
-        Snake next = snake.getNext();
-        if (next != null) {
-            paintSnake(snake.getNext());
+    private void paintSnake(List<AbstractElement> snake) {
+        for (AbstractElement e : snake) {
+            e.getSquare().setBounds(Game.startX + (e.getX() - Game.startX) * Game.size, Game.startY + (e.getY() - Game.startY) * Game.size, Game.size, Game.size);
         }
     }
 

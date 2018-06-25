@@ -2,6 +2,8 @@ import javax.swing.*;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
+import java.util.Map;
 
 import static java.lang.Thread.sleep;
 
@@ -18,15 +20,29 @@ public class Game {
     public static int startX;
     public static int startY;
     private World world;
-    private char lastKeyPressed;
+    private int lastKeyPressed;
+    public static Map<Integer, AbstractElement.Direction> charDir = new HashMap<>();
 
     public void lose() {
 
     }
 
-    public void update() throws InterruptedException {
+    private void initMap () {
+        charDir.put (83, AbstractElement.Direction.DOWN);
+        charDir.put (65, AbstractElement.Direction.LEFT);
+        charDir.put (87, AbstractElement.Direction.UP);
+        charDir.put (68, AbstractElement.Direction.RIGHT);
+        charDir.put (81, AbstractElement.Direction.IDLE);
+        charDir.put (38, AbstractElement.Direction.UP);
+        charDir.put (40, AbstractElement.Direction.DOWN);
+        charDir.put (37, AbstractElement.Direction.LEFT);
+        charDir.put (39, AbstractElement.Direction.RIGHT);
+    }
+
+    private void update() throws InterruptedException {
         while (true) {
             world.move(lastKeyPressed);
+            lastKeyPressed = 0;
             window.paint(world);
             sleep(Game.speed);
         }
@@ -42,9 +58,10 @@ public class Game {
         window.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                lastKeyPressed = e.getKeyChar();
+                lastKeyPressed = e.getKeyCode();
             }
         });
+        initMap();
         update();
     }
 

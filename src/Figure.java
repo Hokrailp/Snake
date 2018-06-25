@@ -11,6 +11,6 @@ public class Figure extends JComponent
 
     public void paintComponent(Graphics g) {
         g.setColor(color);
-        g.fillRect(0, 0, 25, 25);
+        g.fillRect(0, 0, Game.size, Game.size);
     }
 }
