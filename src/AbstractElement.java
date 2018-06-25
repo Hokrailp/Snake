@@ -1,7 +1,7 @@
 import java.awt.*;
 
 /**
- * Gоловa и "подзмейкa"
+ * Головa и "подзмейкa"
  * пока что сделана
  */
 public abstract class AbstractElement {

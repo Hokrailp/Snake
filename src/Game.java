@@ -12,8 +12,8 @@ import static java.lang.Thread.sleep;
  */
 public class Game {
 
-    public static int speed = 100;
-    public static int size = 25;
+    public static int speed = 125;
+    public static int scale = 25;
     private int score = 0;
     public static Painter window;
     public static JLayeredPane screen;
@@ -50,8 +50,8 @@ public class Game {
 
     private void run () throws InterruptedException {
         window = new Painter("Snake");
-        startX = window.getWidth() / 2;
-        startY = window.getHeight() / 2;
+        startX = World.WIDTH / 2;
+        startY = World.HEIGHT / 2;
         screen = window.getLayeredPane();
         world = new World(startX, startY);
         window.paint(world);
