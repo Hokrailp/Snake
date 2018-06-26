@@ -3,13 +3,18 @@ import java.util.List;
 
 public class Painter extends JFrame {
 
-    public void paint (World world) {
+    public void paintScore (int score, JTextField scoreText) {
+        scoreText.setBounds(getWidth() - 250, 0, 250, 35);
+        scoreText.setText("Score: " + score);
+    }
+
+    public void paint(World world) {
         paintFood(world.getFood());
         paintSnake(world.getSnake());
-}
+    }
 
-    private void paintFood (Food food) {
-
+    private void paintFood(Food food) {
+        food.getSquare().setBounds(food.getX() * Game.scale, food.getY() * Game.scale, Game.scale, Game.scale);
     }
 
     private void paintSnake(List<AbstractElement> snake) {
@@ -18,10 +23,10 @@ public class Painter extends JFrame {
         }
     }
 
-    public Painter (String title) {
+    public Painter(String title, int width, int height) {
         super(title);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setSize(Game.window.getWidth(), Game.window.getHeight());
+        setSize(width, height);
         setVisible(true);
     }
 

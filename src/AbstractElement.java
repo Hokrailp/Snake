@@ -43,6 +43,18 @@ public abstract class AbstractElement {
         this.y = y;
     }
 
+    public void setyVelocity(int yVelocity) {
+        this.yVelocity = yVelocity;
+    }
+
+    public void setxVelocity(int xVelocity) {
+        this.xVelocity = xVelocity;
+    }
+
+    public void setSquare(Figure square) {
+        this.square = square;
+    }
+
     private BodyPart create (AbstractElement other) {
         return new BodyPart (other);
     }
