@@ -35,7 +35,7 @@ public class World {
         return food;
     }
 
-    private boolean isCollising (int key) {
+    private boolean isCollising(int key) {
         switch (key) {
             case 0:
                 return worldGrid[Snake.get(0).getY()][Snake.get(0).getX()] == 2;
@@ -46,20 +46,21 @@ public class World {
     }
 
     private Pair<Integer, Integer> pickLocation() {
-        Head head = (Head) Snake.get(0);
         int foodX = Math.abs(random.nextInt()) % (WIDTH - 2);
         int foodY = Math.abs(random.nextInt()) % (HEIGHT - 2);
-        while (foodX == head.getX() && foodY == head.getY()) {
-            foodX = Math.abs(random.nextInt()) % (WIDTH - 2);
-            foodY = Math.abs(random.nextInt()) % (HEIGHT - 2);
+        while (true) {
+            if (worldGrid[foodX][foodY] == 1) {
+                foodX = Math.abs(random.nextInt()) % (WIDTH - 2);
+                foodY = Math.abs(random.nextInt()) % (HEIGHT - 2);
+            } else break;
         }
         return new Pair<>(foodX, foodY);
     }
 
     private void pickLocationAndPlace() {
         Pair<Integer, Integer> foodAxis = pickLocation();
-        food.setX(foodAxis.getKey());
-        food.setY(foodAxis.getValue());
+        food.setX(foodAxis.getValue());
+        food.setY(foodAxis.getKey());
         Food.Type typeAndColor = Food.Type.values()[Math.abs(random.nextInt()) % Food.Type.values().length];
         food.setType(typeAndColor);
         food.getSquare().setColor(Game.typeColor.get(typeAndColor));
@@ -76,8 +77,8 @@ public class World {
                     worldGrid[Snake.get(i).getY()][Snake.get(i).getX()] = 0;
                     Game.window.remove(Snake.get(i).getSquare());
                     Snake.remove(i);
-                    Game.window.repaint();
                 }
+                Game.window.repaint();
                 break;
             case SPEEDUP:
                 Game.speed = 75;
@@ -97,7 +98,7 @@ public class World {
         }
     }
 
-    private void eatOurselves () {
+    private void eatOurselves() {
         if (isCollising(1)) {
             Game.lose();
         }
@@ -110,7 +111,7 @@ public class World {
         lhs.setyVelocity(rhs.getyVelocity());
     }
 
-    private void instantiateHead (int x, int y) {
+    private void instantiateHead(int x, int y) {
         Head init = new Head(x, y);
         Game.window.add(init.getSquare());
         Snake.add(init);
@@ -119,7 +120,7 @@ public class World {
 
     private void instantiateFood() {
         Pair<Integer, Integer> foodAxis = pickLocation();
-        food = new Food(foodAxis.getKey(), foodAxis.getValue());
+        food = new Food(foodAxis.getValue(), foodAxis.getKey());
         Game.window.add(food.getSquare());
         worldGrid[food.getY()][food.getX()] = 2;
     }
@@ -150,7 +151,7 @@ public class World {
         worldGrid[Snake.get(0).getY()][Snake.get(0).getX()] = 1;
     }
 
-    public void move(int key) throws IOException {
+    public void move(int key) {
         AbstractElement head = Snake.get(0);
         AbstractElement.Direction dir = head.getDirection();
         AbstractElement.Direction Key = Game.intDir.get(key);
@@ -173,14 +174,7 @@ public class World {
                         ((Head) head).moveLeft();
                     break;
                 case IDLE:
-                    /*for (int i = 0; i < WIDTH - 1; i++) {
-                        for (int j = 0; j < HEIGHT - 2; j++) {
-                            writer.write(worldGrid[i][j] + " ");
-                        }
-                        writer.write("\n");
-                    }
-                    writer.write("\n---------------------------\n");
-                    writer.close();*/
+                    instantiateFood();
                     break;
             }
         move();
